@@ -1,0 +1,144 @@
+openapi: 3.0.0
+info:
+  description: This API provides audit info
+  version: "1.0.0"
+  title: Audit API
+  contact:
+    email: mchung71@my.bcit.ca
+
+paths:
+  /UFO:
+    get: 
+      summary: get a UFO sighting from history
+      operationId: app.get_ufo_sighting
+      description: gets UFO sightings added after a timestamp
+      parameters:
+        - name: index
+          in: query
+          description: gets the ufo sighting at the index in the event store
+          schema:
+            type: integer
+            example: 100
+      responses: 
+        '200':
+          description: Successfully returned a UFO sighting event
+          content:
+            application/json: 
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/UFO'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+  /cryptid:
+    get: 
+      summary: gets a cryptid sighting from history
+      operationId: app.get_cryptid_sighting
+      description: gets cryptid sighting from the event store
+      parameters:
+        - name: index
+          in: query
+          description: Successfully returned a cryptid sighting event
+          schema:
+            type: integer
+            example: 100
+      responses: 
+        '200':
+          description: Successfully returned a cryptid sighting event
+          content:
+            application/json: 
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/cryptid'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+components:
+  schemas:
+    UFO:
+      required:
+        - number
+        - description
+        - timestamp
+        - latitude
+        - longitude
+        - shape
+      properties:
+        number:
+          example: 5
+        description:
+          type: string
+          example: multiple flying saucers in sky
+        timestamp:
+          type: string
+          format: date-time
+          example: 2016-08-29T09:12:33.001Z
+        latitude:
+          type: number
+          example: 61.5
+        longitude:
+          type: number
+          example: -142.9
+        shape:
+          type: string
+          example: circle
+      type: object
+        
+    cryptid:
+      required:
+        - number
+        - description
+        - timestamp
+        - latitude
+        - longitude
+      properties:
+        number:
+          example: 1
+        description:
+          type: string
+          example: saw Bigfoot in forest
+        timestamp:
+          type: string
+          format: date-time
+          example: 2016-08-29T09:12:33.001Z
+        latitude:
+          type: number
+          example: 61.5
+        longitude:
+          type: number
+          example: -142.9
+      type: object

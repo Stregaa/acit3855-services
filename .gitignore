@@ -1,0 +1,5 @@
+app.log
+stats.sqlite
+events.json
+sightings.sql
+sightings.sqlite

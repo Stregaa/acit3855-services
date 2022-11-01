@@ -1,0 +1,104 @@
+---
+openapi: 3.0.0
+info:
+  title: Mysterious Sightings API
+  description: This API tracks sightings of both UFOs and cryptids
+  contact:
+    email: mchung71@my.bcit.ca
+  version: 1.0.0
+servers:
+- url: /
+tags:
+- name: UFO
+  description: Unidentified Flying Object sightings
+- name: cryptid
+  description: cryptid sightings
+paths:
+  /UFO:
+    post:
+      tags:
+      - UFO
+      summary: reports a UFO sighting
+      description: Adds a new UFO sighting to the system
+      operationId: app.report_UFO_sighting
+      requestBody:
+        description: UFO sighting to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UFO'
+      responses:
+        "201":
+          description: item created
+        "400":
+          description: invalid input, object invalid
+  /cryptid:
+    post:
+      tags:
+      - cryptid
+      summary: reports a cryptid sighting
+      description: Adds a new cryptid sighting to the system
+      operationId: app.report_cryptid_sighting
+      requestBody:
+        description: cryptid sighting to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/cryptid'
+      responses:
+        "201":
+          description: item created
+        "400":
+          description: invalid input, object invalid
+components:
+  schemas:
+    UFO:
+      required:
+      - description
+      - latitude
+      - longitude
+      - number
+      - shape
+      - timestamp
+      properties:
+        number:
+          example: 5
+        description:
+          type: string
+          example: multiple flying saucers in sky
+        timestamp:
+          type: string
+          format: date-time
+          example: 2016-08-29T09:12:33.001Z
+        latitude:
+          type: number
+          example: 61.5
+        longitude:
+          type: number
+          example: -142.9
+        shape:
+          type: string
+          example: circle
+    cryptid:
+      required:
+      - description
+      - latitude
+      - longitude
+      - number
+      - timestamp
+      properties:
+        number:
+          example: 1
+        description:
+          type: string
+          example: saw Bigfoot in forest
+        timestamp:
+          type: string
+          format: date-time
+          example: 2016-08-29T09:12:33.001Z
+        latitude:
+          type: number
+          example: 61.5
+        longitude:
+          type: number
+          example: -142.9

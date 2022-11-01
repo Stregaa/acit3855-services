@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  description: This API tracks sightings of both UFOs and cryptids
+  version: "1.0.0"
+  title: Mysterious Sightings API
+  contact:
+    email: mchung71@my.bcit.ca
+tags:
+  - name: UFO
+    description: Unidentified Flying Object sightings
+  - name: cryptid
+    description: cryptid sightings
+paths:
+  /UFO:
+    get: 
+      tags:
+        - UFO
+      summary: gets UFO sightings
+      operationId: app.get_ufo_sightings
+      description: Gets UFO sightings added after a timestamp
+      parameters:
+        - name: timestamp
+          in: query
+          description: limits the number of items on a page
+          schema:
+            type: string
+            format: date-time
+            example: 2016-08-29T09:12:33.001Z
+      responses: 
+        '200':
+          description: Successfully returned a list of UFO sightings
+          content:
+            application/json: 
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UFO'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    # post:
+    #   tags:
+    #     - UFO
+    #   summary: reports a UFO sighting
+    #   operationId: app.report_UFO_sighting
+    #   description: Adds a new UFO sighting to the system
+    #   responses:
+    #     '201':
+    #       description: item created
+    #     '400':
+    #       description: 'invalid input, object invalid'
+    #   requestBody:
+    #     content:
+    #       application/json:
+    #         schema:
+    #           $ref: '#/components/schemas/UFO'
+    #     description: UFO sighting to add
+  /cryptid:
+    get: 
+      tags:
+        - cryptid
+      summary: gets cryptid sightings
+      operationId: app.get_cryptid_sightings
+      description: Gets cryptid sightings added after a timestamp
+      parameters:
+        - name: timestamp
+          in: query
+          description: limits the number of items on a page
+          schema:
+            type: string
+            format: date-time
+            example: 2016-08-29T09:12:33.001Z
+      responses: 
+        '200':
+          description: Successfully returned a list of cryptid sightings
+          content:
+            application/json: 
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/cryptid'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    # post:
+    #   tags:
+    #     - cryptid
+    #   summary: reports a cryptid sighting
+    #   operationId: app.report_cryptid_sighting
+    #   description: Adds a new cryptid sighting to the system
+    #   responses:
+    #     '201':
+    #       description: item created
+    #     '400':
+    #       description: 'invalid input, object invalid'
+    #   requestBody:
+    #     content:
+    #       application/json:
+    #         schema:
+    #           $ref: '#/components/schemas/cryptid'
+    #     description: cryptid sighting to add
+components:
+  schemas:
+    UFO:
+      required:
+        - number
+        - description
+        - timestamp
+        - latitude
+        - longitude
+        - shape
+      properties:
+        number:
+          example: 5
+        description:
+          type: string
+          example: multiple flying saucers in sky
+        timestamp:
+          type: string
+          format: date-time
+          example: 2016-08-29T09:12:33.001Z
+        latitude:
+          type: number
+          example: 61.5
+        longitude:
+          type: number
+          example: -142.9
+        shape:
+          type: string
+          example: circle
+        
+    cryptid:
+      required:
+        - number
+        - description
+        - timestamp
+        - latitude
+        - longitude
+      properties:
+        number:
+          example: 1
+        description:
+          type: string
+          example: saw Bigfoot in forest
+        timestamp:
+          type: string
+          format: date-time
+          example: 2016-08-29T09:12:33.001Z
+        latitude:
+          type: number
+          example: 61.5
+        longitude:
+          type: number
+          example: -142.9

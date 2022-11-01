@@ -1,0 +1,9 @@
+version: 1
+eventstore1:
+  url: http://localhost:8090/UFO
+eventstore2:
+  url: http://localhost:8090/cryptid
+events:
+  hostname: kafka.japaneast.cloudapp.azure.com
+  port: 9092
+  topic: events

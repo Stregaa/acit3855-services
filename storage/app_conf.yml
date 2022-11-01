@@ -1,0 +1,11 @@
+version: 1
+datastore:
+  user: root
+  password: 
+  hostname: kafka.japaneast.cloudapp.azure.com
+  port: 3306
+  db: sightings
+events:
+  hostname: kafka.japaneast.cloudapp.azure.com
+  port: 9092
+  topic: events
