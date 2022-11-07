@@ -50,9 +50,9 @@ def get_stats():
     else:
         stats = {
             "num_ufo_sightings": result[0][1],
-            "max_ufo_num": result[0][2],
+            "curr_ufo_num": result[0][2],
             "num_cryptid_sightings": result[0][3],
-            "max_cryptid_num": result[0][4] 
+            "curr_cryptid_num": result[0][4] 
         }
         logger.debug(stats)
     logger.info("Request has been completed")
@@ -70,9 +70,9 @@ def populate_stats():
 
     if not results:
         d = Stats(0,
-                  1000,
                   0,
-                  1000,
+                  0,
+                  0,
                   datetime.datetime.now())
 
         session.add(d)
@@ -85,8 +85,8 @@ def populate_stats():
 
         num_ufo_sightings = results[0].num_ufo_sightings
         num_cryptid_sightings = results[0].num_cryptid_sightings
-        max_ufo_num = 1000
-        max_cryptid_num = 1000
+        curr_ufo_num = results[0].curr_ufo_sightings
+        curr_cryptid_num = results[0].curr_cryptid_sightings
 
         ufo_req = requests.get(f"http://localhost:8090/UFO?timestamp={current_datetime}")
         if ufo_req.status_code != 200:
@@ -101,6 +101,7 @@ def populate_stats():
                 # ufo_counter += 1
                 logger.debug(f"Trace ID: {obj['trace_id']}")
             logger.info(f"Number of UFO events received: {counter}")
+            curr_ufo_num = counter
 
         cryptid_req = requests.get(f"http://localhost:8090/cryptid?timestamp={current_datetime}")
         if cryptid_req.status_code != 200:
@@ -115,16 +116,17 @@ def populate_stats():
                 # cryptid_counter += 1
                 logger.debug(f"Trace ID: {obj['trace_id']}")
             logger.info(f"Number of cryptid events received: {counter}")
+            curr_cryptid_num = counter
     
         s = Stats(num_ufo_sightings,
-                max_ufo_num,
+                curr_ufo_num,
                 num_cryptid_sightings,
-                max_cryptid_num,
+                curr_cryptid_num,
                 datetime.datetime.now())
 
         session.add(s)
 
-        logger.debug(f"Updated statistics values: \nnum_ufo_sightings: {num_ufo_sightings} \nmax_ufo_num: {1000} \nnum_cryptid_sightings: {num_cryptid_sightings} \nmax_cryptid_num: {1000}")
+        logger.debug(f"Updated statistics values: \nnum_ufo_sightings: {num_ufo_sightings} \ncurr_ufo_num: {curr_ufo_num} \nnum_cryptid_sightings: {num_cryptid_sightings} \ncurr_cryptid_num: {curr_cryptid_num}")
 
         session.commit()
         session.close()
