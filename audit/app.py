@@ -1,6 +1,8 @@
 import connexion
 from connexion import NoContent
 
+from flask_cors import CORS, cross_origin
+
 import json
 import yaml
 import logging
@@ -100,6 +102,8 @@ def get_cryptid_sighting(index):
 
 
 app = connexion.FlaskApp(__name__, specification_dir="")
+CORS(app.app)
+app.app.config['CORS_HEADERS'] = 'Content-Type'
 app.add_api("mysterious_sightings.yaml",
             strict_validation=True,
             validate_responses=True)

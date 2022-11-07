@@ -2,6 +2,8 @@ import sqlite3
 import connexion
 from connexion import NoContent
 
+from flask_cors import CORS, cross_origin
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from base import Base
@@ -139,6 +141,8 @@ def init_scheduler():
 
 
 app = connexion.FlaskApp(__name__, specification_dir="")
+CORS(app.app)
+app.app.config['CORS_HEADERS'] = 'Content-Type'
 app.add_api("mysterious_sightings.yaml",
             strict_validation=True,
             validate_responses=True)

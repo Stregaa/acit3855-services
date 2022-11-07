@@ -1,7 +1,7 @@
 version: 1
 datastore:
   user: root
-  password: 
+  password: Mc122495!
   hostname: kafka.japaneast.cloudapp.azure.com
   port: 3306
   db: sightings
