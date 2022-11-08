@@ -36,9 +36,9 @@ components:
     SightingStats:
       required:
         - num_ufo_sightings
-        - max_ufo_num
+        - curr_ufo_num
         - num_cryptid_sightings
-        - max_cryptid_num
+        - curr_cryptid_num
       properties:
         num_ufo_sightings:
           type: integer
