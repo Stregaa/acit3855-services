@@ -109,4 +109,4 @@ app.add_api("mysterious_sightings.yaml",
             validate_responses=True)
 
 if __name__ == "__main__":
-    app.run(port=8100)
+    app.run(port=8110)

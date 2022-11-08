@@ -152,4 +152,4 @@ app.add_api("mysterious_sightings.yaml",
 if __name__ == "__main__":
     # run standalone get-event server
     init_scheduler()
-    app.run(port=8110, use_reloader=False)
+    app.run(port=8100, use_reloader=False)
