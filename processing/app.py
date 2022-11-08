@@ -28,6 +28,7 @@ logger = logging.getLogger("basicLogger")
 
 # SQLite
 database = app_config["datastore"]["filename"]
+url = app_config["eventstore"]["url"]
 DB_ENGINE = create_engine(f"sqlite:///{database}")
 Base.metadata.bind = DB_ENGINE
 Base.metadata.create_all(DB_ENGINE)
@@ -88,7 +89,7 @@ def populate_stats():
         curr_ufo_num = results[0].curr_ufo_num
         curr_cryptid_num = results[0].curr_cryptid_num
 
-        ufo_req = requests.get(f"localhost:8090/UFO?timestamp={current_datetime}")
+        ufo_req = requests.get(f"{url}/UFO?timestamp={current_datetime}")
         if ufo_req.status_code != 200:
             logger.error("Status code for UFO events not 200")
         else:
@@ -100,7 +101,7 @@ def populate_stats():
             logger.info(f"Number of UFO events received: {ufo_counter}")
             curr_ufo_num = ufo_counter
 
-        cryptid_req = requests.get(f"localhost:8090/cryptid?timestamp={current_datetime}")
+        cryptid_req = requests.get(f"{url}/cryptid?timestamp={current_datetime}")
         if cryptid_req.status_code != 200:
             logger.error("Status code for cryptid events not 200")
         else:
@@ -140,7 +141,7 @@ app = connexion.FlaskApp(__name__, specification_dir="")
 app.add_api("mysterious_sightings.yaml",
             strict_validation=True,
             validate_responses=True)
-            
+
 CORS(app.app)
 app.app.config['CORS_HEADERS'] = 'Content-Type'
 
