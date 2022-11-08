@@ -43,6 +43,36 @@ services:
     # Where our data will be persisted
     volumes:
       - my-db:/var/lib/mysql
+      
+  receiver:
+          image: stregaa/receiver:latest
+          ports:
+            - '8080:8080'
+          depends_on:
+            - 'kafka'
+
+  storage:
+          image: stregaa/storage:latest
+          ports:
+            - '8090:8090'
+          depends_on:
+            - 'kafka'
+            - 'db'
+
+  processing:
+          image: stregaa/processing:latest
+          ports:
+            - '8100:8100'
+          network_mode: 'host'
+          depends_on:
+            - 'storage'
+
+  audit:
+          image: stregaa/audit:latest
+          ports:
+            - '8110:8110'
+          depends_on:
+            - 'kafka' 
 # Names our volume
 volumes:
   my-db:
