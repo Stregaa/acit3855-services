@@ -92,31 +92,25 @@ def populate_stats():
         if ufo_req.status_code != 200:
             logger.error("Status code for UFO events not 200")
         else:
-            counter = 0
-            # ufo_counter = 0
+            ufo_counter = 0
             for obj in ufo_req.json():
-                counter += 1
-                # print(obj)
                 num_ufo_sightings += 1
-                # ufo_counter += 1
+                ufo_counter += 1
                 logger.debug(f"Trace ID: {obj['trace_id']}")
-            logger.info(f"Number of UFO events received: {counter}")
-            curr_ufo_num = counter
+            logger.info(f"Number of UFO events received: {ufo_counter}")
+            curr_ufo_num = ufo_counter
 
         cryptid_req = requests.get(f"localhost:8090/cryptid?timestamp={current_datetime}")
         if cryptid_req.status_code != 200:
             logger.error("Status code for cryptid events not 200")
         else:
-            counter = 0
-            # cryptid_counter = 0
+            cryptid_counter = 0
             for obj in cryptid_req.json():
-                counter += 1
-                # print(obj)
                 num_cryptid_sightings += 1
-                # cryptid_counter += 1
+                cryptid_counter += 1
                 logger.debug(f"Trace ID: {obj['trace_id']}")
-            logger.info(f"Number of cryptid events received: {counter}")
-            curr_cryptid_num = counter
+            logger.info(f"Number of cryptid events received: {cryptid_counter}")
+            curr_cryptid_num = cryptid_counter
     
         s = Stats(num_ufo_sightings,
                 curr_ufo_num,
