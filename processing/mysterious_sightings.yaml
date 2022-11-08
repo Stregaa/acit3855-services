@@ -43,13 +43,13 @@ components:
         num_ufo_sightings:
           type: integer
           example: 100
-        max_ufo_num:
+        curr_ufo_num:
           type: integer
           example: 5
         num_cryptid_sightings:
           type: integer
           example: 100
-        max_cryptid_num:
+        curr_cryptid_num:
           type: integer
           example: 5
       type: object
