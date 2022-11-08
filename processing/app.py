@@ -85,8 +85,8 @@ def populate_stats():
 
         num_ufo_sightings = results[0].num_ufo_sightings
         num_cryptid_sightings = results[0].num_cryptid_sightings
-        curr_ufo_num = results[0].curr_ufo_sightings
-        curr_cryptid_num = results[0].curr_cryptid_sightings
+        curr_ufo_num = results[0].curr_ufo_num
+        curr_cryptid_num = results[0].curr_cryptid_num
 
         ufo_req = requests.get(f"http://localhost:8090/UFO?timestamp={current_datetime}")
         if ufo_req.status_code != 200:
