@@ -88,7 +88,7 @@ def populate_stats():
         curr_ufo_num = results[0].curr_ufo_num
         curr_cryptid_num = results[0].curr_cryptid_num
 
-        ufo_req = requests.get(f"http://localhost:8090/UFO?timestamp={current_datetime}")
+        ufo_req = requests.get(f"kafka.japaneast.cloudapp.azure.com:8090/UFO?timestamp={current_datetime}")
         if ufo_req.status_code != 200:
             logger.error("Status code for UFO events not 200")
         else:
@@ -103,7 +103,7 @@ def populate_stats():
             logger.info(f"Number of UFO events received: {counter}")
             curr_ufo_num = counter
 
-        cryptid_req = requests.get(f"http://localhost:8090/cryptid?timestamp={current_datetime}")
+        cryptid_req = requests.get(f"kafka.japaneast.cloudapp.azure.com:8090/cryptid?timestamp={current_datetime}")
         if cryptid_req.status_code != 200:
             logger.error("Status code for cryptid events not 200")
         else:
