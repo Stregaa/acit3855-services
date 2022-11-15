@@ -7,3 +7,6 @@ events:
   hostname: kafka.japaneast.cloudapp.azure.com
   port: 9092
   topic: events
+retries:
+  max: 5
+  sleep: 3

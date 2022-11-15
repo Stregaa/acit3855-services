@@ -7,6 +7,7 @@ import logging.config
 import random
 import datetime
 import json
+import time
 from pykafka import KafkaClient
 
 current_datetime = datetime.datetime.now()
@@ -24,8 +25,25 @@ logger = logging.getLogger("basicLogger")
 headers = {"Content-Type": "application/json"}
 # MAX_EVENTS = 10
 # EVENT_FILE = "events.json"
+# event_data = []
 
-event_data = []
+retries = app_config["retries"]["max"]
+sleep_time = app_config["retries"]["sleep"]
+
+try_counter = 0
+
+while try_counter < retries:
+    logger.info(f"Attempting to connect to Kafka - Current retry count: {try_counter}")
+    try:
+        client = KafkaClient(hosts=f'{app_config["events"]["hostname"]}:{app_config["events"]["port"]}')
+        topic = client.topics[str.encode(app_config["events"]["topic"])]
+        producer = topic.get_sync_producer()
+        break
+
+    except:
+        logger.error("Connection to Kafka failed.")
+        try_counter += 1
+        time.sleep(sleep_time)
 
 def report_UFO_sighting(body):
     # receives UFO event
@@ -43,9 +61,6 @@ def report_UFO_sighting(body):
     
     # logger.info(f"Returned event report_UFO_sighting response (Id: {trace_id}) with status {x.status_code}")
 
-    client = KafkaClient(hosts=f'{app_config["events"]["hostname"]}:{app_config["events"]["port"]}')
-    topic = client.topics[str.encode(app_config["events"]["topic"])]
-    producer = topic.get_sync_producer()
     msg = {
         "type": "ufo",
         "datetime": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
@@ -92,9 +107,9 @@ def report_cryptid_sighting(body):
     # x = requests.post(app_config["eventstore2"]["url"], json=loaded, headers=headers)
     # logger.info(f"Returned event report_cryptid_sighting response (Id: {trace_id}) with status {x.status_code}")
 
-    client = KafkaClient(hosts=f'{app_config["events"]["hostname"]}:{app_config["events"]["port"]}')
-    topic = client.topics[str.encode(app_config["events"]["topic"])]
-    producer = topic.get_sync_producer()
+    # client = KafkaClient(hosts=f'{app_config["events"]["hostname"]}:{app_config["events"]["port"]}')
+    # topic = client.topics[str.encode(app_config["events"]["topic"])]
+    # producer = topic.get_sync_producer()
     msg = {
         "type": "cryptid",
         "datetime": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),

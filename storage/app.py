@@ -139,11 +139,11 @@ def process_messages():
                           app_config["events"]["port"])
     retries = app_config["retries"]["max"]
     sleep_time = app_config["retries"]["sleep"]
+    
     try_counter = 0
 
     while try_counter < retries:
         logger.info(f"Attempting to connect to Kafka - Current retry count: {try_counter}")
-
         try: 
             client = KafkaClient(hosts=hostname)
             topic = client.topics[str.encode(app_config["events"]["topic"])]
