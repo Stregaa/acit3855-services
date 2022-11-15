@@ -11,6 +11,7 @@ import logging
 import logging.config
 import pymysql
 import datetime
+import time
 
 from pykafka import KafkaClient
 from pykafka.common import OffsetType
@@ -136,32 +137,45 @@ def process_messages():
     # Process event messages
     hostname = "%s:%d" % (app_config["events"]["hostname"],
                           app_config["events"]["port"])
-    client = KafkaClient(hosts=hostname)
-    topic = client.topics[str.encode(app_config["events"]["topic"])]
+    retries = app_config["retries"]["max"]
+    sleep_time = app_config["retries"]["sleep"]
+    try_counter = 0
 
-    # Create a consume on a consumer group, that only reads new messages
-    # (uncommitted messages) when the service re-starts (i.e., it doesn't
-    # read all the old messages from the history in the message queue).
-    consumer = topic.get_simple_consumer(consumer_group=b'event_group',
-                                         reset_offset_on_start=False,
-                                         auto_offset_reset=OffsetType.LATEST)
+    while try_counter < retries:
+        logger.info(f"Attempting to connect to Kafka - Current retry count: {try_counter}")
 
-    # This is blocking - it will wait for a new message
-    for msg in consumer:
-        msg_str = msg.value.decode('utf-8')
-        msg = json.loads(msg_str)
-        logger.info("Message: %s" % msg)
-        payload = msg["payload"]
-        # print(payload)
+        try: 
+            client = KafkaClient(hosts=hostname)
+            topic = client.topics[str.encode(app_config["events"]["topic"])]
 
-        if msg["type"] == "ufo": # Change this to your event type
-            # Store the payload to the DB
-            report_UFO_sighting(payload)
-        elif msg["type"] == "cryptid": # Change this to your event type
-            report_cryptid_sighting(payload)
+            # Create a consume on a consumer group, that only reads new messages
+            # (uncommitted messages) when the service re-starts (i.e., it doesn't
+            # read all the old messages from the history in the message queue).
+            consumer = topic.get_simple_consumer(consumer_group=b'event_group',
+                                                reset_offset_on_start=False,
+                                                auto_offset_reset=OffsetType.LATEST)
 
-        # Commit the new message as being read
-        consumer.commit_offsets()
+            # This is blocking - it will wait for a new message
+            for msg in consumer:
+                msg_str = msg.value.decode('utf-8')
+                msg = json.loads(msg_str)
+                logger.info("Message: %s" % msg)
+                payload = msg["payload"]
+                # print(payload)
+
+                if msg["type"] == "ufo": # Change this to your event type
+                    # Store the payload to the DB
+                    report_UFO_sighting(payload)
+                elif msg["type"] == "cryptid": # Change this to your event type
+                    report_cryptid_sighting(payload)
+
+                # Commit the new message as being read
+                consumer.commit_offsets()
+
+        except:
+            logger.error("Connection to Kafka failed.")
+            try_counter += 1
+            time.sleep(sleep_time)
 
 
 app = connexion.FlaskApp(__name__, specification_dir="")
