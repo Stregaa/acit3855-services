@@ -93,7 +93,7 @@ def populate_stats():
         curr_cryptid_num = results[0].curr_cryptid_num
 
         ufo_req = requests.get(app_config["eventstore"]["url"] + 
-                                "/ufo?timestamp=" + 
+                                "/UFO?timestamp=" + 
                                 last_updated + "&end_timestamp=" + 
                                 current_timestamp)
         if ufo_req.status_code != 200:
