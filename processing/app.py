@@ -83,9 +83,9 @@ def populate_stats():
 
     else:
         results = session.query(Stats).order_by(Stats.last_updated.desc())
-        last_updated = results[0].last_updated.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3]+"Z"
 
-        current_timestamp = datetime.datetime.now()
+        last_updated = results[0].last_updated.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3]+"Z"
+        current_timestamp = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3]+"Z"
 
         num_ufo_sightings = results[0].num_ufo_sightings
         num_cryptid_sightings = results[0].num_cryptid_sightings
@@ -95,7 +95,7 @@ def populate_stats():
         ufo_req = requests.get(app_config["eventstore"]["url"] + 
                                 "/ufo?timestamp=" + 
                                 last_updated + "&end_timestamp=" + 
-                                str(current_timestamp))
+                                current_timestamp)
         if ufo_req.status_code != 200:
             logger.error("Status code for UFO events not 200")
         else:
@@ -110,7 +110,7 @@ def populate_stats():
         cryptid_req = requests.get(app_config["eventstore"]["url"] + 
                                 "/cryptid?timestamp=" + 
                                 last_updated + "&end_timestamp=" + 
-                                str(current_timestamp))
+                                current_timestamp)
         if cryptid_req.status_code != 200:
             logger.error("Status code for cryptid events not 200")
         else:
