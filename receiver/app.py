@@ -49,7 +49,6 @@ def report_UFO_sighting(body):
     # receives UFO event
     python_data = json.dumps(body)
     loaded = json.loads(python_data)
-
     trace_id = random.randint(100000000, 999999999)
     loaded["trace_id"] = trace_id
 
