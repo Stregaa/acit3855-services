@@ -95,7 +95,7 @@ def populate_stats():
         ufo_req = requests.get(app_config["eventstore"]["url"] + 
                                 "/blood-pressure?timestamp=" + 
                                 last_updated + "&end_timestamp=" + 
-                                current_timestamp)
+                                str(current_timestamp))
         if ufo_req.status_code != 200:
             logger.error("Status code for UFO events not 200")
         else:
@@ -110,7 +110,7 @@ def populate_stats():
         cryptid_req = requests.get(app_config["eventstore"]["url"] + 
                                 "/blood-pressure?timestamp=" + 
                                 last_updated + "&end_timestamp=" + 
-                                current_timestamp)
+                                str(current_timestamp))
         if cryptid_req.status_code != 200:
             logger.error("Status code for cryptid events not 200")
         else:
