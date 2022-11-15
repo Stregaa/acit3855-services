@@ -50,14 +50,14 @@ services:
       - my-db:/var/lib/mysql
       
   receiver:
-          image: receiver:latest
+          image: stregaa/receiver:latest
           ports:
             - '8080:8080'
           depends_on:
             - 'kafka'
 
   storage:
-          image: storage:latest
+          image: stregaa/storage:latest
           ports:
             - '8090:8090'
           depends_on:
@@ -65,7 +65,7 @@ services:
             - 'db'
 
   processing:
-          image: processing:latest
+          image: stregaa/processing:latest
           ports:
             - '8100:8100'
           network_mode: 'host'
@@ -73,13 +73,13 @@ services:
             - 'storage'
 
   audit:
-          image: audit:latest
+          image: stregaa/audit:latest
           ports:
             - '8110:8110'
           depends_on:
             - 'kafka' 
   dashboard:
-          image: dashboard:latest
+          image: stregaa/dashboard:latest
           ports:
           - '3000:3000'
           depends_on:
