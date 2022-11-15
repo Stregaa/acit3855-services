@@ -43,10 +43,10 @@ export default function AppStats() {
 							<td># Cryptid: {stats['num_cryptid_sightings']}</td>
 						</tr>
 						<tr>
-							<td colspan="2">Current UFO Sightings: {stats['curr_ufo_num']}</td>
+							<td colSpan="2">Current UFO Sightings: {stats['curr_ufo_num']}</td>
 						</tr>
 						<tr>
-							<td colspan="2">Current Cryptid Sightings: {stats['curr_ufo_num']}</td>
+							<td colSpan="2">Current Cryptid Sightings: {stats['curr_cryptid_num']}</td>
 						</tr>
 					</tbody>
                 </table>
