@@ -93,7 +93,7 @@ def populate_stats():
         curr_cryptid_num = results[0].curr_cryptid_num
 
         ufo_req = requests.get(app_config["eventstore"]["url"] + 
-                                "/blood-pressure?timestamp=" + 
+                                "/ufo?timestamp=" + 
                                 last_updated + "&end_timestamp=" + 
                                 str(current_timestamp))
         if ufo_req.status_code != 200:
@@ -108,7 +108,7 @@ def populate_stats():
             curr_ufo_num = ufo_counter
 
         cryptid_req = requests.get(app_config["eventstore"]["url"] + 
-                                "/blood-pressure?timestamp=" + 
+                                "/cryptid?timestamp=" + 
                                 last_updated + "&end_timestamp=" + 
                                 str(current_timestamp))
         if cryptid_req.status_code != 200:
