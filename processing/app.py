@@ -121,7 +121,8 @@ def populate_stats():
                 logger.debug(f"Trace ID: {obj['trace_id']}")
             logger.info(f"Number of cryptid events received: {cryptid_counter}")
             curr_cryptid_num = cryptid_counter
-    
+
+        current_timestamp = datetime.datetime.strptime(current_timestamp, "%Y-%m-%dT%H:%M:%S.%fZ")
         s = Stats(num_ufo_sightings,
                 curr_ufo_num,
                 num_cryptid_sightings,
