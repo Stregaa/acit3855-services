@@ -68,12 +68,15 @@ def report_UFO_sighting(body):
 
     return NoContent, 201
 
-def get_ufo_sightings(timestamp):
+def get_ufo_sightings(timestamp, end_timestamp):
     # receives UFO event
     session = DB_SESSION()
     timestamp_datetime = datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%fZ")
+    end_timestamp_datetime = datetime.datetime.strptime(end_timestamp, "%Y-%m-%dT%H:%M:%S.%fZ")
 
-    sightings = session.query(UFOSighting).filter(UFOSighting.date_created >= timestamp_datetime)
+    sightings = session.query(UFOSighting).filter(
+        UFOSighting.date_created >= timestamp_datetime, 
+        UFOSighting.date_created < end_timestamp_datetime)
 
     results_list = []
 
@@ -107,13 +110,16 @@ def report_cryptid_sighting(body):
 
     return NoContent, 201
 
-def get_cryptid_sightings(timestamp):
+def get_cryptid_sightings(timestamp, end_timestamp):
     # receives UFO event
     # print(timestamp)
     session = DB_SESSION()
     timestamp_datetime = datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%fZ")
+    end_timestamp_datetime = datetime.datetime.strptime(end_timestamp, "%Y-%m-%dT%H:%M:%S.%fZ")
 
-    sightings = session.query(CryptidSighting).filter(CryptidSighting.date_created >= timestamp_datetime)
+    sightings = session.query(CryptidSighting).filter(
+        CryptidSighting.date_created >= timestamp_datetime,
+        CryptidSighting.date_created < end_timestamp_datetime)
 
     results_list = []
 

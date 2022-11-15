@@ -6,6 +6,7 @@ from flask_cors import CORS, cross_origin
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy import and_
 from base import Base
 from stats import Stats
 
@@ -82,14 +83,19 @@ def populate_stats():
 
     else:
         results = session.query(Stats).order_by(Stats.last_updated.desc())
-        current_datetime = results[0].last_updated.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3]+"Z"
+        last_updated = results[0].last_updated.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3]+"Z"
+
+        current_timestamp = datetime.datetime.now()
 
         num_ufo_sightings = results[0].num_ufo_sightings
         num_cryptid_sightings = results[0].num_cryptid_sightings
         curr_ufo_num = results[0].curr_ufo_num
         curr_cryptid_num = results[0].curr_cryptid_num
 
-        ufo_req = requests.get(f"{url}/UFO?timestamp={current_datetime}")
+        ufo_req = requests.get(app_config["eventstore"]["url"] + 
+                                "/blood-pressure?timestamp=" + 
+                                last_updated + "&end_timestamp=" + 
+                                current_timestamp)
         if ufo_req.status_code != 200:
             logger.error("Status code for UFO events not 200")
         else:
@@ -101,7 +107,10 @@ def populate_stats():
             logger.info(f"Number of UFO events received: {ufo_counter}")
             curr_ufo_num = ufo_counter
 
-        cryptid_req = requests.get(f"{url}/cryptid?timestamp={current_datetime}")
+        cryptid_req = requests.get(app_config["eventstore"]["url"] + 
+                                "/blood-pressure?timestamp=" + 
+                                last_updated + "&end_timestamp=" + 
+                                current_timestamp)
         if cryptid_req.status_code != 200:
             logger.error("Status code for cryptid events not 200")
         else:
@@ -117,7 +126,7 @@ def populate_stats():
                 curr_ufo_num,
                 num_cryptid_sightings,
                 curr_cryptid_num,
-                datetime.datetime.now())
+                current_timestamp)
 
         session.add(s)
 
