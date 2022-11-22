@@ -21,3 +21,8 @@ loggers:
 root:
   level: DEBUG
   handlers: [console]
+file:
+  class: logging.FileHandler
+  level: DEBUG
+  formatter: simple
+  filename: /logs/app_storage.log
