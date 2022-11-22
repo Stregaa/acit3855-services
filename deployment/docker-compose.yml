@@ -57,7 +57,8 @@ services:
           environment:
             - TARGET_ENV=test
           volumes:
-            - /home/azureuser/config/receiver:/config          
+            - /home/azureuser/config/receiver:/config   
+            - /home/azureuser/logs:/logs        
           depends_on:
             - 'kafka'
 
@@ -69,7 +70,8 @@ services:
           environment:
             - TARGET_ENV=test
           volumes:
-            - /home/azureuser/config/storage:/config  
+            - /home/azureuser/config/storage:/config
+            - /home/azureuser/logs:/logs
           depends_on:
             - 'kafka'
             - 'db'
@@ -83,7 +85,8 @@ services:
           environment:
             - TARGET_ENV=test
           volumes:
-            - /home/azureuser/config/processing:/config  
+            - /home/azureuser/config/processing:/config
+            - /home/azureuser/logs:/logs
           depends_on:
             - 'storage'
 
@@ -95,7 +98,8 @@ services:
           environment:
             - TARGET_ENV=test
           volumes:
-            - /home/azureuser/config/audit:/config  
+            - /home/azureuser/config/audit:/config
+            - /home/azureuser/logs:/logs
           depends_on:
             - 'kafka'
 
