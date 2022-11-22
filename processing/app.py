@@ -52,10 +52,32 @@ logger.info("Log Conf File: %s" % log_conf_file)
 # SQLite
 database = app_config["datastore"]["filename"]
 url = app_config["eventstore"]["url"]
+sqlite_file = app_config["datastore"]["filename"]
 DB_ENGINE = create_engine(f"sqlite:///{database}")
 Base.metadata.bind = DB_ENGINE
 Base.metadata.create_all(DB_ENGINE)
 DB_SESSION = sessionmaker(bind=DB_ENGINE)
+
+def create_database():
+    conn = sqlite3.connect(sqlite_file)
+
+    c = conn.cursor()
+    c.execute('''
+            CREATE TABLE stats
+            (id INTEGER PRIMARY KEY ASC, 
+            num_ufo_sightings INTEGER NOT NULL,
+            curr_ufo_num INTEGER,
+            num_cryptid_sightings INTEGER NOT NULL,
+            curr_cryptid_num INTEGER,
+            last_updated VARCHAR(100) NOT NULL)
+            ''')
+
+    conn.commit()
+    conn.close()
+
+if os.path.exists(sqlite_file) == False:
+    create_database()
+
 
 def get_stats():
     # gets stats
@@ -63,7 +85,7 @@ def get_stats():
     session = DB_SESSION()
     results = session.query(Stats).order_by(Stats.last_updated.desc())
 
-    con = sqlite3.connect("stats.sqlite")
+    con = sqlite3.connect(sqlite_file)
     cur = con.cursor()
     cur.execute(str(results))
     result = cur.fetchall()
