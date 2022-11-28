@@ -7,6 +7,29 @@ info:
     email: mchung71@my.bcit.ca
 
 paths:
+  /health:
+    get:
+      summary: check service health
+      operationId: app.get_health
+      responses:
+        '200':
+          description: Processing service is running
+          content:
+            application/json: 
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/health'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
   /stats:
     get: 
       summary: Gets the event stats
@@ -33,6 +56,27 @@ paths:
 
 components:
   schemas:
+    health: 
+      required: 
+        - audit
+        - processing
+        - receiver
+        - storage
+      properties:
+        audit:
+          type: string
+          example: "running"
+        processing:
+          type: string
+          example: "running"
+        receiver:
+          type: string
+          example: "running"
+        storage:
+          type: string
+          example: "running"
+      type: object
+
     SightingStats:
       required:
         - num_ufo_sightings

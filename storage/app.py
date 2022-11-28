@@ -84,6 +84,7 @@ def report_UFO_sighting(body):
 
     return NoContent, 201
 
+
 def get_ufo_sightings(timestamp, end_timestamp):
     # receives UFO event
     session = DB_SESSION()
@@ -104,6 +105,7 @@ def get_ufo_sightings(timestamp, end_timestamp):
     logger.info("Query for UFO sightings after %s returns %d results" %(timestamp, len(results_list)))
     # print(results_list)
     return results_list, 200
+
 
 def report_cryptid_sighting(body):
     # receives cryptid event
@@ -126,6 +128,7 @@ def report_cryptid_sighting(body):
 
     return NoContent, 201
 
+
 def get_cryptid_sightings(timestamp, end_timestamp):
     # receives UFO event
     # print(timestamp)
@@ -147,6 +150,7 @@ def get_cryptid_sightings(timestamp, end_timestamp):
     logger.info("Query for cryptid sightings after %s returns %d results" %(timestamp, len(results_list)))
 
     return results_list, 200
+
 
 def process_messages():
     # Process event messages
@@ -192,6 +196,10 @@ def process_messages():
             try_counter += 1
             time.sleep(sleep_time)
 
+
+def get_health():
+    return 200
+    
 
 app = connexion.FlaskApp(__name__, specification_dir="")
 app.add_api("mysterious_sightings.yaml",

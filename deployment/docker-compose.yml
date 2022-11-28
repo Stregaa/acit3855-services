@@ -104,6 +104,19 @@ services:
           depends_on:
             - 'kafka'
 
+  health:
+          build: .
+          image: stregaa/health:latest
+          ports:
+            - '8120:8120'
+          environment:
+            - TARGET_ENV=test
+          volumes:
+            - /home/azureuser/config/health:/config
+            - /home/azureuser/logs:/logs
+          depends_on:
+            - 'kafka'
+
   dashboard:
           build: .
           image: stregaa/dashboard:latest

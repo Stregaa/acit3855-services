@@ -58,6 +58,7 @@ Base.metadata.bind = DB_ENGINE
 Base.metadata.create_all(DB_ENGINE)
 DB_SESSION = sessionmaker(bind=DB_ENGINE)
 
+
 def create_database():
     conn = sqlite3.connect(sqlite_file)
 
@@ -106,6 +107,7 @@ def get_stats():
     session.close()
 
     return stats, 200
+
 
 def populate_stats():
     # populates stats in database
@@ -182,6 +184,7 @@ def populate_stats():
 
         logger.info("Processing period has ended")
 
+
 def init_scheduler():
     # calls populate_stats based on periodic_sec from app_conf.yml
     sched = BackgroundScheduler(daemon=True)
@@ -189,6 +192,10 @@ def init_scheduler():
                   'interval',
                   seconds=app_config['scheduler']['period_sec'])
     sched.start()
+
+
+def get_health():
+    return 200
 
 
 app = connexion.FlaskApp(__name__, specification_dir="")

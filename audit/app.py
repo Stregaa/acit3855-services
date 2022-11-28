@@ -122,6 +122,10 @@ def get_cryptid_sighting(index):
     return { "message": "Not Found"}, 404
 
 
+def get_health():
+    return 200
+
+
 app = connexion.FlaskApp(__name__, specification_dir="")
 app.add_api("mysterious_sightings.yaml",
             strict_validation=True,

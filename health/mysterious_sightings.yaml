@@ -1,0 +1,54 @@
+openapi: 3.0.0
+info:
+  description: This API provides health checks
+  version: "1.0.0"
+  title: Health API
+  contact:
+    email: mchung71@my.bcit.ca
+
+paths:
+  /health:
+    get:
+      summary: check service health
+      operationId: app.get_health
+      responses:
+        '200':
+          description: Processing service is running
+          content:
+            application/json: 
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/health'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+components:
+  schemas:
+    health: 
+      required: 
+        - audit
+        - processing
+        - receiver
+        - storage
+      properties:
+        audit:
+          type: string
+          example: "running"
+        processing:
+          type: string
+          example: "running"
+        receiver:
+          type: string
+          example: "running"
+        storage:
+          type: string
+          example: "running"
+      type: object

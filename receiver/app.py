@@ -114,6 +114,7 @@ def report_UFO_sighting(body):
 
     return NoContent, 201
 
+
 def report_cryptid_sighting(body):
     # receives cryptid event
     python_data = json.dumps(body)
@@ -162,6 +163,10 @@ def report_cryptid_sighting(body):
     # fh.close()
 
     return NoContent, 201
+
+
+def get_health():
+    return 200
 
 
 app = connexion.FlaskApp(__name__, specification_dir="")

@@ -14,6 +14,28 @@ tags:
 - name: cryptid
   description: cryptid sightings
 paths:
+  /health:
+    get:
+      summary: check service health
+      operationId: app.get_health
+      responses:
+        '200':
+          description: Receiver service is running
+          content:
+            application/json: 
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/health'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
   /UFO:
     post:
       tags:
@@ -52,6 +74,27 @@ paths:
           description: invalid input, object invalid
 components:
   schemas:
+    health: 
+      required: 
+        - audit
+        - processing
+        - receiver
+        - storage
+      properties:
+        audit:
+          type: string
+          example: "running"
+        processing:
+          type: string
+          example: "running"
+        receiver:
+          type: string
+          example: "running"
+        storage:
+          type: string
+          example: "running"
+      type: object
+
     UFO:
       required:
       - description
