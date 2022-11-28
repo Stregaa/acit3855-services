@@ -81,15 +81,13 @@ paths:
 components:
   schemas:
     health: 
-      required: 
+      type: object
+      required:
+        - health
+      properties:
         health:
-          type: object
-          required:
-            - health
-            properties:
-              health:
-                type: integer
-                example: 200
+          type: integer
+          example: 200
     UFO:
       required:
       - description
