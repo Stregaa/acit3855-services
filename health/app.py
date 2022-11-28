@@ -58,10 +58,10 @@ def create_database():
     c.execute('''
             CREATE TABLE health
             (id INTEGER PRIMARY KEY ASC, 
-            receiver VARCHAR(100) NOT NULL,
-            storage VARCHAR(100) NOT NULL,
-            processing VARCHAR(100) NOT NULL,
-            audit VARCHAR(100) NOT NULL,
+            receiver VARCHAR(100),
+            storage VARCHAR(100),
+            processing VARCHAR(100),
+            audit VARCHAR(100),
             last_updated VARCHAR(100) NOT NULL)
             ''')
 
@@ -72,7 +72,7 @@ if os.path.exists(sqlite_file) == False:
     create_database()
 
 
-def health_check():
+def get_health():
     logger.info("Health check started")
     session = DB_SESSION()
 
@@ -100,21 +100,29 @@ def health_check():
         audit = results[0].audit
 
         # health check logic
-        receiver_check = requests.get(url+":8080/health")
-        if receiver_check.status_code == 200:
+        try:
+            requests.get(app_config["services"]["receiver"]["url"])
             receiver = "Running"
+        except: 
+            receiver = "Down"
         
-        storage_check = requests.get(url+":8090/health")
-        if storage_check.status_code == 200:
+        try:
+            requests.get(app_config["services"]["storage"]["url"])
             storage = "Running"
+        except: 
+            storage = "Down"
 
-        processing_check = requests.get(url+":8100/health")
-        if processing_check.status_code == 200:
+        try:
+            requests.get(app_config["services"]["processing"]["url"])
             processing = "Running"
+        except: 
+            processing = "Down"
 
-        audit_check = requests.get(url+":8110/health")
-        if audit_check.status_code == 200:
+        try:
+            requests.get(app_config["services"]["audit"]["url"])
             audit = "Running"
+        except: 
+            audit = "Down"
 
         current_timestamp = datetime.datetime.strptime(current_timestamp, "%Y-%m-%dT%H:%M:%S.%fZ")
         h = Health(receiver,
@@ -136,7 +144,7 @@ def health_check():
 def init_scheduler():
     # calls populate_stats based on periodic_sec from app_conf.yml
     sched = BackgroundScheduler(daemon=True)
-    sched.add_job(health_check,
+    sched.add_job(get_health,
                   'interval',
                   seconds=app_config['scheduler']['period_sec'])
     sched.start()

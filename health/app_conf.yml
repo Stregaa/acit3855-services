@@ -5,3 +5,12 @@ scheduler:
   period_sec: 5
 eventstore:
   url: http://localhost:8120
+services:
+  receiver:
+    url: kafka.japaneast.cloudapp.azure.com:8080/health
+  storage:
+    url: kafka.japaneast.cloudapp.azure.com:8090/health
+  processing:
+    url: kafka.japaneast.cloudapp.azure.com:8100/health
+  audit:
+    url: kafka.japaneast.cloudapp.azure.com:8110/health

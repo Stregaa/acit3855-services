@@ -8,18 +8,18 @@ class Health(Base):
     __tablename__ = "health"
 
     id = Column(Integer, primary_key=True)
-    receiver = Column(String(20), nullable=False)
-    storage = Column(String(20), nullable=False)
-    processing = Column(String(20), nullable=False)
-    audit = Column(String(20), nullable=False)
+    receiver = Column(String(20), nullable=True)
+    storage = Column(String(20), nullable=True)
+    processing = Column(String(20), nullable=True)
+    audit = Column(String(20), nullable=True)
     last_updated = Column(DateTime, nullable=False)
 
     def __init__(self, receiver, storage, processing, audit, last_updated):
         """ Initializes a health check object """
         self.receiver = receiver
-        self.curr_ufo_num = storage
-        self.num_cryptid_sightings = processing
-        self.curr_cryptid_num = audit
+        self.storage = storage
+        self.processing = processing
+        self.audit = audit
         self.last_updated = last_updated
 
     def to_dict(self):
