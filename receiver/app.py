@@ -171,6 +171,7 @@ def get_health():
 
 app = connexion.FlaskApp(__name__, specification_dir="")
 app.add_api("mysterious_sightings.yaml",
+            base_path="/receiver",
             strict_validation=True,
             validate_responses=True)
 
