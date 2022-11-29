@@ -15,7 +15,7 @@ function App() {
 
     return (
         <div className="App">
-            <img src={logo} className="App-logo" alt="logo" height="150px" width="400px"/>
+            <img src={logo} className="App-logo" alt="logo" width="400px"/>
             <div>
                 <Health />
                 <AppStats/>
