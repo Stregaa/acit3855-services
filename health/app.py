@@ -140,6 +140,8 @@ def get_health():
 
         logger.info("Health check period has ended")
 
+        return h, 200
+
 
 def init_scheduler():
     # calls populate_stats based on periodic_sec from app_conf.yml

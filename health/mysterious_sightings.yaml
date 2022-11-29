@@ -11,12 +11,6 @@ paths:
     get:
       summary: check service health
       operationId: app.get_health
-      parameters:
-        - name: health
-          in: query
-          schema:
-            type: integer
-            example: 200
       responses:
         '200':
           description: Processing service is running
@@ -39,10 +33,22 @@ paths:
 components:
   schemas:
     health: 
-      type: object
       required:
-        - health
+        - receiver
+        - storage
+        - processing
+        - audit
       properties:
-        health:
-          type: integer
-          example: 200
+        receiver:
+          type: string
+          example: 'running'
+        storage:
+          type: string
+          example: 'running'
+        processing:
+          type: string
+          example: 'running'
+        audit:
+          type: string
+          example: 'running'
+      type: object
