@@ -205,7 +205,7 @@ app.add_api("mysterious_sightings.yaml",
             validate_responses=True)
 
 if "TARGET_ENV" not in os.environ or os.environ["TARGET_ENV"] != "test":
-    CORS(app.app)
+    CORS(app.app, resources={r'/*': {'origins': '*'}})
     app.app.config['CORS_HEADERS'] = 'Content-Type'
 
 if __name__ == "__main__":
