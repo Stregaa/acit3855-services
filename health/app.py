@@ -101,25 +101,25 @@ def get_health():
 
         # health check logic
         try:
-            requests.get(app_config["services"]["receiver"]["url"])
+            requests.get(app_config["services"]["receiver"]["url"], timeout=5)
             receiver = "Running"
         except: 
             receiver = "Down"
         
         try:
-            requests.get(app_config["services"]["storage"]["url"])
+            requests.get(app_config["services"]["storage"]["url"], timeout=5)
             storage = "Running"
         except: 
             storage = "Down"
 
         try:
-            requests.get(app_config["services"]["processing"]["url"])
+            requests.get(app_config["services"]["processing"]["url"], timeout=5)
             processing = "Running"
         except: 
             processing = "Down"
 
         try:
-            requests.get(app_config["services"]["audit"]["url"])
+            requests.get(app_config["services"]["audit"]["url"], timeout=5)
             audit = "Running"
         except: 
             audit = "Down"
@@ -138,6 +138,8 @@ def get_health():
             "audit": audit,
             "last_updated": last_updated
         }
+
+        print(health_dict)
 
         session.add(h)
 
