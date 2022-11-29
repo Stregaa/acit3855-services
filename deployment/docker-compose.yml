@@ -53,7 +53,9 @@ services:
           build: .
           image: stregaa/receiver:latest
           ports:
-            - '8080:8080'
+            - '8080'
+          networks:
+            - 'api.network'
           environment:
             - TARGET_ENV=test
           volumes:
@@ -66,7 +68,9 @@ services:
           build: .
           image: stregaa/storage:latest
           ports:
-            - '8090:8090'
+            - '8090'
+          networks:
+            - 'api.network'
           environment:
             - TARGET_ENV=test
           volumes:
@@ -80,8 +84,9 @@ services:
           build: .
           image: stregaa/processing:latest
           ports:
-            - '8100:8100'
-          network_mode: 'host'
+            - '8100'
+          networks:
+            - 'api.network'
           environment:
             - TARGET_ENV=test
           volumes:
@@ -95,7 +100,9 @@ services:
           build: .
           image: stregaa/audit:latest
           ports:
-            - '8110:8110'
+            - '8110'
+          networks:
+            - 'api.network'
           environment:
             - TARGET_ENV=test
           volumes:
@@ -121,11 +128,36 @@ services:
           build: .
           image: stregaa/dashboard:latest
           ports:
-          - '3000:3000'
+            - '3000'
+          networks:
+            - 'api.network'
           depends_on:
           - "processing"
           - "audit"
+
+  nginx:
+    image: nginx:latest
+    # Connects the conf file of the container to the conf file in our folder
+    volumes:
+      - /azureuser/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    # It will start up the nginx only when all api containers have started
+    depends_on:
+      - "receiver"
+      - "storage"
+      - "processing"
+      - "audit"
+      - "dashboard-ui"
+    # Connects the port 80 of the nginx container to localhost:80 or localhost
+    ports:
+    - "80:80"
+    networks:
+    - "api.network"
+
 # Names our volume
 volumes:
   my-db:
   processing-db:
+
+# network
+networks:
+  api.network:
