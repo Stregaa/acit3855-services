@@ -7,10 +7,10 @@ eventstore:
   url: http://localhost:8120
 services:
   receiver:
-    url: http://kafka.japaneast.cloudapp.azure.com:8080/health
+    url: http://kafka.japaneast.cloudapp.azure.com/receiver/health
   storage:
-    url: http://kafka.japaneast.cloudapp.azure.com:8090/health
+    url: http://kafka.japaneast.cloudapp.azure.com/storage/health
   processing:
-    url: http://kafka.japaneast.cloudapp.azure.com:8100/health
+    url: http://kafka.japaneast.cloudapp.azure.com/processing/health
   audit:
-    url: http://kafka.japaneast.cloudapp.azure.com:8110/health
+    url: http://kafka.japaneast.cloudapp.azure.com/audit/health
