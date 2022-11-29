@@ -69,6 +69,7 @@ def get_ufo_sighting(index):
                 ufo_events.append(msg)
 
         event = ufo_events[index]
+        event.headers.add("Access-Control-Allow-Origin", "*")
         return event, 200
             
             # if msg["type"] != "ufo":
@@ -106,6 +107,7 @@ def get_cryptid_sighting(index):
                 cryptid_events.append(msg)
 
         event = cryptid_events[index]
+        event.headers.add("Access-Control-Allow-Origin", "*")
         return event, 200
 
             # if msg["type"] != "cryptid":
