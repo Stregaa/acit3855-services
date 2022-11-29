@@ -27,7 +27,6 @@ export default function EndpointAudit(props) {
     }, [getAudit]);
 
     if (error){
-        console.log(error)
         return (<div className={"error"}>Error found when fetching from API</div>)
     } else if (isLoaded === false){
         return(<div>Loading...</div>)
