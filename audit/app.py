@@ -46,6 +46,8 @@ logger.info("Log Conf File: %s" % log_conf_file)
 
 def get_ufo_sighting(index):
     # Get ufo sighting event in history
+    logging.getLogger('flask_cors').level = logging.DEBUG
+
     hostname = "%s:%d" % (app_config["events"]["hostname"], 
                           app_config["events"]["port"])
     client = KafkaClient(hosts=hostname)
@@ -88,6 +90,8 @@ def get_ufo_sighting(index):
 
 def get_cryptid_sighting(index):
     # Get cryptid sighting event in history
+    logging.getLogger('flask_cors').level = logging.DEBUG
+
     hostname = "%s:%d" % (app_config["events"]["hostname"], 
                           app_config["events"]["port"])
     client = KafkaClient(hosts=hostname)
