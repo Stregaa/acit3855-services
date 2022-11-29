@@ -130,6 +130,14 @@ def get_health():
                   processing,
                   audit,
                   current_timestamp)
+        
+        health_dict = {
+            "receiver": receiver,
+            "storage": storage,
+            "processing": processing,
+            "audit": audit,
+            "last_updated": last_updated
+        }
 
         session.add(h)
 
@@ -140,7 +148,7 @@ def get_health():
 
         logger.info("Health check period has ended")
 
-        return h, 200
+        return health_dict, 200
 
 
 def init_scheduler():
