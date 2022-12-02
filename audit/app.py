@@ -46,8 +46,6 @@ logger.info("Log Conf File: %s" % log_conf_file)
 
 def get_ufo_sighting(index):
     # Get ufo sighting event in history
-    logging.getLogger('flask_cors').level = logging.DEBUG
-
     hostname = "%s:%d" % (app_config["events"]["hostname"], 
                           app_config["events"]["port"])
     client = KafkaClient(hosts=hostname)
@@ -71,7 +69,6 @@ def get_ufo_sighting(index):
                 ufo_events.append(msg)
 
         event = ufo_events[index]
-        event.headers.add("Access-Control-Allow-Origin", "*")
         return event, 200
             
             # if msg["type"] != "ufo":
@@ -90,8 +87,6 @@ def get_ufo_sighting(index):
 
 def get_cryptid_sighting(index):
     # Get cryptid sighting event in history
-    logging.getLogger('flask_cors').level = logging.DEBUG
-
     hostname = "%s:%d" % (app_config["events"]["hostname"], 
                           app_config["events"]["port"])
     client = KafkaClient(hosts=hostname)
@@ -111,7 +106,6 @@ def get_cryptid_sighting(index):
                 cryptid_events.append(msg)
 
         event = cryptid_events[index]
-        event.headers.add("Access-Control-Allow-Origin", "*")
         return event, 200
 
             # if msg["type"] != "cryptid":
@@ -139,7 +133,7 @@ app.add_api("mysterious_sightings.yaml",
             validate_responses=True)
 
 if "TARGET_ENV" not in os.environ or os.environ["TARGET_ENV"] != "test":
-    CORS(app.app, resources={r'/*': {'origins': '*'}})
+    CORS(app.app)
     app.app.config['CORS_HEADERS'] = 'Content-Type'
 
 if __name__ == "__main__":
