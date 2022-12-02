@@ -13,7 +13,7 @@ paths:
       operationId: app.get_health
       responses:
         '200':
-          description: Processing service is running
+          description: Health service is running
           content:
             application/json: 
               schema:

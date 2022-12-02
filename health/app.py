@@ -44,7 +44,7 @@ logger.info("Log Conf File: %s" % log_conf_file)
 
 # SQLite
 database = app_config["datastore"]["filename"]
-url = app_config["eventstore"]["url"]
+# url = app_config["eventstore"]["url"]
 sqlite_file = app_config["datastore"]["filename"]
 DB_ENGINE = create_engine(f"sqlite:///{database}")
 Base.metadata.bind = DB_ENGINE
